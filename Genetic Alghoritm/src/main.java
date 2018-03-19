@@ -12,8 +12,8 @@ public class main extends JFrame {
 	final static Set<Point> positiveSet = new HashSet<Point>();
 	final static Set<Point> negativeSet = new HashSet<Point>();
 	static int polynomialDegree = -1;
-	static int sizeOfGeneration = 100;
-	static int mutationRate = 5;
+	static int sizeOfGeneration = 200;
+	static int mutationRate = 25;
 	static Generation generation = new Generation();
 	static CartesianPlane cp;
 	static Individual ind;
@@ -82,12 +82,12 @@ public class main extends JFrame {
 		BufferedReader negativeFile;
 		
 		if(polynomialDegree==3 || polynomialDegree==4){
-			positiveFile = new BufferedReader(new FileReader("bin/positive.txt"));
-			negativeFile = new BufferedReader(new FileReader("bin/negative.txt"));
+			positiveFile = new BufferedReader(new FileReader("src/positive.txt"));
+			negativeFile = new BufferedReader(new FileReader("src/negative.txt"));
 		}
 		else{
-			positiveFile = new BufferedReader(new FileReader("bin/mixed_positive.txt"));
-			negativeFile = new BufferedReader(new FileReader("bin/mixed_negative.txt"));
+			positiveFile = new BufferedReader(new FileReader("src/mixed_positive.txt"));
+			negativeFile = new BufferedReader(new FileReader("src/mixed_negative.txt"));
 		}
 		
 		try {
