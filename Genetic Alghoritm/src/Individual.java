@@ -7,7 +7,7 @@ import java.util.Vector;
 public class Individual {
 	 int id;
 	 int fitness = 0;
-	 int chromosomeLength = 8;
+	 int chromosomeLength = 5;
 	 ArrayList<Integer> genes;
 	 
 	 Vector<int[]> genotype;

@@ -12,8 +12,8 @@ public class main extends JFrame {
 	final static Set<Point> positiveSet = new HashSet<Point>();
 	final static Set<Point> negativeSet = new HashSet<Point>();
 	static int polynomialDegree = -1;
-	static int sizeOfGeneration = 200;
-	static int mutationRate = 25;
+	static int sizeOfGeneration = 500;
+	static int mutationRate = 10;
 	static Generation generation = new Generation();
 	static CartesianPlane cp;
 	static Individual ind;
@@ -27,6 +27,9 @@ public class main extends JFrame {
 		int currentHighestFitness = generation.calculateFitness();	
 		
 		int terminateCondition = positiveSet.size()+negativeSet.size();
+		
+		ind = generation.fittestInd;
+		cp.setPolynomial(ind);
 		
 		if(polynomialDegree==3 || polynomialDegree==4){
 			while(currentHighestFitness<terminateCondition){
@@ -74,7 +77,7 @@ public class main extends JFrame {
 		
 		cp = new CartesianPlane(positiveSet, negativeSet);
 		JFrame window = new JFrame("Results presentation");
-		window.add(new CartesianPlane(positiveSet, negativeSet));
+		window.add(cp);
 		window.setSize(1600, 1000);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);

@@ -105,14 +105,11 @@ public class CartesianPlane extends JPanel {
 		    g2.fillOval(x, y, 6, 6);
 		} 
 		
-		if(ind!=null){
-			polynomial.clear();
-			pointX = null;
-			pointY = null;
-			for(int i=0; i<polynomial.size(); i++){
+		if(polynomial.size()>0){
+			for(int i=0; i<polynomial.size() && i < pointX.length; i++){
 				pointX[i]=polynomial.get(i).getX();
 				pointY[i]=polynomial.get(i).getY();
-				System.out.println(pointX[i]);
+				//System.out.println(pointX[i]);
 			}
 			
 			int i=0;
@@ -152,10 +149,11 @@ public class CartesianPlane extends JPanel {
 	}*/
 
 	public void setPolynomial(Individual currentFittest) { 
+		polynomial.clear();
 		ind = currentFittest;
 		int counter = ind.genes.size()-1;
 		int result=0;
-		for(int i=-1000; i<=1000; i++){
+		for(int i=-100; i<=100; i++){
 			for(Integer gene : ind.genes){
 		    	if(counter!=0){
 		    		int power = (int) Math.pow(i, counter);
@@ -166,11 +164,15 @@ public class CartesianPlane extends JPanel {
 		    		result = result + gene;
 		    		Point p = new Point(i, result);
 		    		polynomial.add(p);
+		    		//System.out.println("x: " + i);
+		    		//System.out.println("y: " + result);
 		    	}
 			 }	
 			result=0;
 			counter = ind.genes.size()-1;
 		}
+		pointX = new int[201];
+		pointY = new int[201];
 		repaint();
 	}
 }
