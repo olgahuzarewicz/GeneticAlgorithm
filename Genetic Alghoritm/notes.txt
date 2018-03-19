@@ -1,0 +1,3 @@
+-Selection by roulette
+-After element is chosen, remove it from wheel
+-Duplicate population to perform mutation and crossover
