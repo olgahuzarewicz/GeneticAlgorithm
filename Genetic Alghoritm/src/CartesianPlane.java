@@ -11,6 +11,10 @@ import javax.swing.*;
 
 public class CartesianPlane extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final double spacing = 20;
 	static Set<Point> positive;
 	static Set<Point> negative;
@@ -36,6 +40,7 @@ public class CartesianPlane extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
 		final double width = getWidth();
 		final double height = getHeight();
 
@@ -70,19 +75,6 @@ public class CartesianPlane extends JPanel {
 		g2.draw(new Line2D.Double(x1, yaxis, x2, yaxis));
 		g2.draw(new Line2D.Double(xaxis, y1, xaxis, y2));
 		
-		
-		//(0,0)
-		//g2.fillOval(788, 473, 6, 6);
-		
-		//(1,0)
-		//g2.fillOval(808, 473, 6, 6);
-		
-		//(0,1)
-		//g2.fillOval(788, 453, 6, 6);
-		
-		//(1,1)
-		//g2.fillOval(808, 453, 6, 6);
-		
 		int x;
 		int y;
 		g2.setColor(Color.BLUE);
@@ -106,47 +98,29 @@ public class CartesianPlane extends JPanel {
 		} 
 		
 		if(polynomial.size()>0){
-			for(int i=0; i<polynomial.size() && i < pointX.length; i++){
-				pointX[i]=polynomial.get(i).getX();
-				pointY[i]=polynomial.get(i).getY();
-				//System.out.println(pointX[i]);
+			
+			try {
+				for(int i=0; i<polynomial.size() && i < pointX.length; i++){
+					pointX[i]=polynomial.get(i).getX();
+					pointY[i]=polynomial.get(i).getY();
+				}
+				
+				int i=0;
+				for(Point p : polynomial){
+					pointX[i] = 788 + p.getX()*20;
+					pointY[i] = 473 - p.getY()*20;
+					i++;
+				}
+				
+				g2.drawPolyline(pointX, pointY, polynomial.size());
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
-			int i=0;
-			for(Point p : polynomial){
-				pointX[i] = 788 + p.getX()*20;
-				pointY[i] = 473 - p.getY()*20;
-				i++;
-			}
-			
-			g2.drawPolyline(pointX, pointY, polynomial.size());
 	}
 }
-
-
-	/*@Override
-	public void update(Graphics g2) {
-		super.update(g2);
-		if(ind!=null){
-			pointX = null;
-			pointY = null;
-			for(int i=0; i<polynomial.size(); i++){
-				pointX[i]=polynomial.get(i).getX();
-				pointY[i]=polynomial.get(i).getY();
-				System.out.println(pointX[i]);
-			}
-			
-			int i=0;
-			for(Point p : polynomial){
-				pointX[i] = 788 + p.getX()*20;
-				pointY[i] = 473 - p.getY()*20;
-				i++;
-			}
-			
-			g2.drawPolyline(pointX, pointY, polynomial.size());
-			//polynomial.clear();
-		}
-	}*/
 
 	public void setPolynomial(Individual currentFittest) { 
 		polynomial.clear();
@@ -164,8 +138,6 @@ public class CartesianPlane extends JPanel {
 		    		result = result + gene;
 		    		Point p = new Point(i, result);
 		    		polynomial.add(p);
-		    		//System.out.println("x: " + i);
-		    		//System.out.println("y: " + result);
 		    	}
 			 }	
 			result=0;

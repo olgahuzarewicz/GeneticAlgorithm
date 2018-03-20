@@ -7,13 +7,14 @@ import java.util.Scanner;
 import java.util.Set;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class main extends JFrame {
 	final static Set<Point> positiveSet = new HashSet<Point>();
 	final static Set<Point> negativeSet = new HashSet<Point>();
 	static int polynomialDegree = -1;
-	static int sizeOfGeneration = 500;
-	static int mutationRate = 10;
+	static int sizeOfGeneration = 100;
+	static int mutationRate = 5;
 	static Generation generation = new Generation();
 	static CartesianPlane cp;
 	static Individual ind;
@@ -24,11 +25,14 @@ public class main extends JFrame {
 		//Initialization of random population
 		generation.generateRandomGeneration(polynomialDegree, sizeOfGeneration);
 		
-		int currentHighestFitness = generation.calculateFitness();	
+		generation.calculateFitnessGen();	
+		
+		ind = Generation.fittestInd;
+		int currentHighestFitness = ind.getFitness();
 		
 		int terminateCondition = positiveSet.size()+negativeSet.size();
 		
-		ind = generation.fittestInd;
+		ind = Generation.fittestInd;
 		cp.setPolynomial(ind);
 		
 		if(polynomialDegree==3 || polynomialDegree==4){
@@ -39,25 +43,28 @@ public class main extends JFrame {
 				
 				generation.mutation(mutationRate);
 				
-				currentHighestFitness = generation.calculateFitness();
+				ind = Generation.fittestInd;
+				currentHighestFitness = ind.getFitness();
 				
-				ind = generation.fittestInd;
+				ind = Generation.fittestInd;
 				cp.setPolynomial(ind);
 			}
+			return;
 		}
 		else{
-			while(currentHighestFitness<(terminateCondition-8)){
+			while(currentHighestFitness<(terminateCondition-6)){
 				generation.selection();
 				
 				generation.crossover();	
 				
 				generation.mutation(mutationRate);
 				
-				currentHighestFitness = generation.calculateFitness();
+				currentHighestFitness = generation.calculateFitnessGen();
 				
-				ind = generation.fittestInd;
+				ind = Generation.fittestInd;
 				cp.setPolynomial(ind);
 			}
+			return;
 		}
 				
 	}
@@ -74,13 +81,6 @@ public class main extends JFrame {
 			}
 		}
 		polynomialDegree=polynomialDegree+1;
-		
-		cp = new CartesianPlane(positiveSet, negativeSet);
-		JFrame window = new JFrame("Results presentation");
-		window.add(cp);
-		window.setSize(1600, 1000);
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setVisible(true);
 		BufferedReader positiveFile;
 		BufferedReader negativeFile;
 		
@@ -128,6 +128,14 @@ public class main extends JFrame {
 		} finally {
 		    negativeFile.close();
 		}
+		
+		cp = new CartesianPlane(positiveSet, negativeSet);
+		JFrame window = new JFrame("Results presentation");
+		window.add(cp);
+		window.setSize(1600, 1000);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setVisible(true);
+		
 		reader.close();
 	}
 	

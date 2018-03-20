@@ -16,7 +16,6 @@ public class Individual {
 		 genotype = new Vector<int[]>(size);		 
 	 }
 
-	 
 	 public int getId() {
 		return id;
 	 }
@@ -38,6 +37,8 @@ public class Individual {
 
 	int calculateFitness(){
 		 fitness=0;
+		 int positiveFitness=0;
+		 int negativeFitness=0;
 		 String temp = "";
 		 int decimalValue=-1;
 		 genes = new ArrayList<>();	     
@@ -59,63 +60,71 @@ public class Individual {
 		 int x;
 		 int y;
 		 Set<Point> positiveSet = main.getPositiveSet();
-		 int result = 0;
+		 int result;
+		 int counter;
+		 int power;
 		 for (Point p : positiveSet) {
 			    x = p.getX();
-			    //System.out.println("Positive x: " + x);
 			    y = p.getY();
-			    //System.out.println("Positive y: " + y);
-			    int counter = genes.size()-1;
+			    result=0;
+			    counter = genes.size()-1;
 			    
 			    for(Integer gene : genes){
 			    	if(counter>1){
-			    		int power = (int) Math.pow(x, counter);
+			    		power = (int) Math.pow(x, counter);
 			    		result = result + (gene*power);
-						counter--;
-						//System.out.print("(" +gene + "x^" + counter + ")+");
 			    	}
-			    	else{
+			    	else if(counter==1){
 			    		result = result + gene;
-			    		//System.out.print("(" + gene + ")\n");
 			    	}
-				 }
-			    if(result>=y){
+			    	counter--;
+				}
+			    if(result<=y){
 			    	fitness++;
-			    	//System.out.println("It's ok");
+			    	//System.out.println("result: " + result);
+		    		//System.out.println("x: "+ x);
+		    		//System.out.println("y: " + y);
+			    	//positiveFitness++;
 			    }
-			    result=0;
-			    counter = genes.size()-1;
-			    //System.out.println();
+			    /*else{
+			    	fitness--;
+			    }*/
 		 }
 		 
 		 Set<Point> negativeSet = main.getNegativeSet();
+		 result=0;
 		 for (Point p : negativeSet) {
 			    x = p.getX();
-			    //System.out.println("Negative x: " + x);
 			    y = p.getY();
-			    //System.out.println("Negative y: " + y);
-			    int counter = genes.size()-1;
+			    result=0;
+			    counter = genes.size()-1;
 			    
 			    for(Integer gene : genes){
 			    	if(counter>1){
-			    		int power = (int) Math.pow(x, counter);
+			    		power = (int) Math.pow(x, counter);
 			    		result = result + (gene*power);						
-			    		counter--;
-			    		//System.out.print("(" +gene + "x^" + counter + ")+");
 			    	}
-			    	else{
+			    	else if(counter==1){
 			    		result = result + gene;
-			    		//System.out.print("(" + gene + ")\n");
-			    		//System.out.println("result: " + result);
 			    	}
+			    	counter--;
 				 }
-			    if(result<=y){
+			    if(result>=y){
 			    	fitness++;
-			    	//System.out.println("It's ok");
+			    	//System.out.println("result: " + result);
+		    		//System.out.println("x: "+ x);
+		    		//System.out.println("y: " + y);
+			    	//negativeFitness++;
 			    }
-			    result=0;
-			    counter = genes.size()-1;
+			    /*else{
+			    	fitness--;
+			    }*/
 		 }
+		 /*if(positiveFitness==0 || negativeFitness==0){
+		    	fitness=fitness-5;
+		 }*/
+		    //positiveFitness=0;
+		    //negativeFitness=0;
 		 return fitness;
 	 }
 	

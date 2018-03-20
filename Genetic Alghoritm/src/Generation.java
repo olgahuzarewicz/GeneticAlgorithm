@@ -6,12 +6,14 @@ import java.util.Random;
 public class Generation {
 	static ArrayList<Individual> generation;
 	static ArrayList<Individual> childGeneration;
+	
 	static int fittest;
 	static Individual fittestInd;
 	Individual secondFittestInd;
 	int worstFitness;
 	Individual worstInd;
 	int genCounter;
+	
 	int id;
 	int totalGenerationFitness;
 	float averageGenerationFitness;
@@ -38,7 +40,7 @@ public class Generation {
 		id=size;
 	}
 	
-	int calculateFitness(){
+	int calculateFitnessGen(){
 		System.out.println("Generation " + genCounter);
 		fittest=0;
 		worstInd=generation.get(0);
@@ -48,11 +50,11 @@ public class Generation {
 				if(fittest!=0){
 					secondFittestInd=fittestInd;
 				}
-				fittest=fitness;
+				fittest=ind.getFitness();
 				fittestInd=ind;		
 			}
 			if(fitness<worstFitness){
-				worstFitness=fitness;
+				worstFitness=ind.getFitness();
 				worstInd=ind;
 			}
 		}
@@ -60,7 +62,6 @@ public class Generation {
 		System.out.println("Fittest in this generation:");
 		int counter = fittestInd.genes.size()-1;
 
-        System.out.println("genes size " + counter);
 			for(Integer gene : fittestInd.genes){
 		    	if(counter>0){
 		    		System.out.print("(" +gene + "x^" + counter + ")+");
@@ -102,6 +103,8 @@ public class Generation {
 			int pickedNumber = rand.nextInt(rouletteSize);
 			childGeneration.add(roulette.get(pickedNumber));
 		}	
+		childGeneration.add(fittestInd);
+		childGeneration.add(secondFittestInd);
 		averageGenerationFitness=totalGenerationFitness/generation.size();
 		generation.clear();
 	}
@@ -116,6 +119,14 @@ public class Generation {
 			Random rand2 = new Random(); 
 			int index2 = rand2.nextInt(childGeneration.size());
 			Individual ind2 = childGeneration.get(index2);
+			
+			while(ind==ind2){
+				index = rand.nextInt(childGeneration.size());
+				ind = childGeneration.get(index);
+				
+				index2 = rand2.nextInt(childGeneration.size());
+				ind2 = childGeneration.get(index2);
+			}
 			
 			
 			Individual indNew = new Individual(ind.genotype.size());
